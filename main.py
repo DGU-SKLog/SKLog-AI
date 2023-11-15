@@ -3,8 +3,21 @@ from pydantic import BaseModel
 import openai
 
 app = FastAPI()
+from pathlib import Path
+import environ
+import os
 
-API_KEY =
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env(
+    API_KEY=(str, ''),
+)
+environ.Env.read_env(
+    env_file=os.path.join(BASE_DIR,'.env')
+)
+
+API_KEY = env.API_KEY
 openai.api_key = API_KEY
 
 model = "gpt-3.5-turbo"
