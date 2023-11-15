@@ -57,7 +57,7 @@ text_data = """덧셈과 뺄셈
 
 context_query = "The plain text to be made in the form of a markdown table is as follows. \n\n"  + text_data
 
-query1 = question_query  + rule_query + result_query + context_query
+query1 = question_query + rule_query + result_query + context_query
 
 print(query1)
 
