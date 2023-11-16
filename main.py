@@ -14,6 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent
 environ.Env.read_env(
     env_file=os.path.join(BASE_DIR, '.env')
 )
+
 env = environ.Env(
     API_KEY=(str, ''),
 )
