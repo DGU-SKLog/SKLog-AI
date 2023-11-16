@@ -25,7 +25,8 @@ openai.api_key = API_KEY
 model = "gpt-3.5-turbo"
 
 class InputText(BaseModel):
-    text: str
+    request: str
+    content: str
 
 @app.post("/query")
 def text(input_text: InputText):
@@ -33,7 +34,7 @@ def text(input_text: InputText):
 
     messages = [
         {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": input_text.text}
+        {"role": "user", "content": input_text.request + input_text.content}
     ]
 
     response = openai.ChatCompletion.create(
@@ -43,10 +44,10 @@ def text(input_text: InputText):
     )
 
     answer = response['choices'][0]['message']['content']
-    print("query: ", input_text.text)
+    print("query: ", input_text.request + input_text.content)
     print("answer: ", answer)
-    return {"output": answer}
+    return answer
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8001)
+    uvicorn.run(app, host="127.0.0.1", port=8000)
