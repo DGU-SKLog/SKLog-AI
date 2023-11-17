@@ -6,7 +6,7 @@ app = FastAPI()
 from pathlib import Path
 import environ
 import os
-
+#uvicorn main:app --reload
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 BASE_DIR = Path(__file__).resolve().parent
