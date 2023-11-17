@@ -46,7 +46,7 @@ def text(input_text: InputText):
     answer = response['choices'][0]['message']['content']
     print("query: ", input_text.request + input_text.content)
     print("answer: ", answer)
-    return answer
+    return {'content': answer}
 
 if __name__ == "__main__":
     import uvicorn
