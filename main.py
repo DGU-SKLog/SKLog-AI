@@ -37,7 +37,7 @@ def text(input_text: InputText):
     query = f"""
 You should only print the results for the question without plaintext. 
 You just have to answer the "question". DO NOT attempt any other interaction.
-If the output cannot be generated or is ambiguous, you should just print "Impossible" and the why it's impossible in one line.
+If the output cannot be generated or is ambiguous, you should just print "Impossible"
 {input_text.request} 
 """
 
@@ -51,13 +51,13 @@ query:
         
 answer:
 {ai_item}
-"""
+            """
 
     query += f"""
 {input_text.content}
 """
 
-    print("query: ", query)
+
 
     messages = [
         {"role": "system", "content": "You are a robot that only outputs the results of requests without any interaction with the questioner."},
@@ -71,8 +71,8 @@ answer:
     )
 
     answer = response['choices'][0]['message']['content']
-
-    print("answer: ", answer)
+    print("*query: ", query)
+    print("*answer: \n", answer)
     return {'content': answer}
 
 if __name__ == "__main__":
