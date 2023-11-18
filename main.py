@@ -28,37 +28,39 @@ model = "gpt-3.5-turbo"
 class InputText(BaseModel):
     request: str
     content: str
-    userContentList: Optional[List[str]] = None
-    aiContentList: Optional[List[str]] = None
+    userContentExamples: Optional[List[str]] = None
+    aiContentExamples: Optional[List[str]] = None
 
 @app.post("/query")
 def text(input_text: InputText):
 
     query = f"""
-{input_text.request}
-    
-내용: 
-{input_text.content}
+You should only print the results for the question without plaintext. 
+You just have to answer the "question". DO NOT attempt any other interaction.
+If the output cannot be generated or is ambiguous, you should just print "Impossible" and the why it's impossible in one line.
+{input_text.request} 
+"""
 
- """
+    if input_text.userContentExamples:
+        query += "The query below is an example of a query:\n"
 
-    if input_text.userContentList:
-        query += "*참고: 아래 예시 참고해서 대답해.\n"
-
-        for user_item, ai_item in zip(input_text.userContentList, input_text.aiContentList):
+        for user_item, ai_item in zip(input_text.userContentExamples, input_text.aiContentExamples):
             query += f"""
-변경전 예시:
+query:
 {user_item}
-            
-변경후 예시:
+        
+answer:
 {ai_item}
-            
-            """
+"""
+
+    query += f"""
+{input_text.content}
+"""
 
     print("query: ", query)
 
     messages = [
-        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "system", "content": "You are a robot that only outputs the results of requests without any interaction with the questioner."},
         {"role": "user", "content": query}
     ]
 
