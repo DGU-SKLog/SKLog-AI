@@ -7,7 +7,8 @@ app = FastAPI()
 from pathlib import Path
 import environ
 import os
-#uvicorn main:app --reload
+
+# uvicorn main:app --reload
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -25,15 +26,16 @@ openai.api_key = API_KEY
 
 model = "gpt-3.5-turbo"
 
+
 class InputText(BaseModel):
     request: str
     content: str
     userContentExamples: Optional[List[str]] = None
     aiContentExamples: Optional[List[str]] = None
 
+
 @app.post("/query")
 def text(input_text: InputText):
-
     query = f"""
 You should only print the results for the question without plaintext.
 You just have to answer the "query". DO NOT attempt any other interaction.
@@ -50,7 +52,7 @@ If the output cannot be generated or is ambiguous, you should just print "해당
             query += f"""
 query:
 {user_item}
-        
+
 answer:
 {ai_item}
             """
@@ -59,10 +61,9 @@ answer:
 {input_text.content}
 """
 
-
-
     messages = [
-        {"role": "system", "content": "You are a robot that only outputs the results of requests without any interaction with the questioner."},
+        {"role": "system",
+         "content": "You are a robot that only outputs the results of requests without any interaction with the questioner."},
         {"role": "user", "content": query}
     ]
 
@@ -78,33 +79,7 @@ answer:
     return {'content': answer}
 
 
-class ChatText(BaseModel):
-    question: str
-
-
-@app.post("/ai/chat-bot")
-def chat_bot(chat_text: ChatText):
-    query = chat_text.question
-
-    print("query: ", query)
-
-    messages = [
-        {"role": "system", "content": "you are helpful assistant."},
-        {"role": "user", "content": query}
-    ]
-
-    response = openai.ChatCompletion.create(
-        temperature=0.8,
-        model=model,
-        messages=messages
-    )
-
-    answer = response['choices'][0]['message']['content']
-
-    print("answer: ", answer)
-    return {'answer': answer}
-
-
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="127.0.0.1", port=8000)
