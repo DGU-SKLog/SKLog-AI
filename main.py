@@ -35,9 +35,11 @@ class InputText(BaseModel):
 def text(input_text: InputText):
 
     query = f"""
-You should only print the results for the question without plaintext. 
-You just have to answer the "question". DO NOT attempt any other interaction.
-If the output cannot be generated or is ambiguous, you should just print "Impossible"
+You should only print the results for the question without plaintext.
+You just have to answer the "query". DO NOT attempt any other interaction.
+Do your best to carry out the command. 
+If the output cannot be generated or is ambiguous, you should just print "해당 작업에 대한 정보가 부족합니다. 더 정확한 데이터를 입력해주세요".
+
 {input_text.request} 
 """
 
@@ -65,7 +67,7 @@ answer:
     ]
 
     response = openai.ChatCompletion.create(
-        temperature=0,
+        temperature=0.8,
         model=model,
         messages=messages
     )
