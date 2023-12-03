@@ -32,6 +32,15 @@ class InputText(BaseModel):
     userContentExamples: Optional[List[str]] = None
     aiContentExamples: Optional[List[str]] = None
 
+class ChatText(BaseModel):
+    question: str
+
+class CohensionText(BaseModel):
+    content: str
+
+class MetaText(BaseModel):
+    content: str
+
 @app.post("/query")
 def text(input_text: InputText):
 
@@ -77,11 +86,11 @@ answer:
     print("*answer: \n", answer)
     return {'content': answer}
 
-class cohensionText(BaseModel):
-    content: str
+
+
 
 @app.post("/ai/cohesion")
-def cohension(co_text: cohensionText):
+def cohension(co_text: CohensionText):
 
     query = f"""
 You should only print the results for the question without plaintext.
@@ -112,10 +121,11 @@ Please respond in the same language as the content; if the content is in Korean,
     print("*answer: \n", answer)
     return {'content': answer}
 
-class metaText(BaseModel):
-    content: str
+
+
+
 @app.post("/ai/metadata")
-def cohension(me_text: metaText):
+def cohension(me_text: MetaText):
 
     query = f"""
 You should only print the results for the question without plaintext.
@@ -146,9 +156,6 @@ Dictionary form is {title: 'Title that you make', tag: ['tag1', 'tag2', ...]}
     print("*query: ", query)
     print("*answer: \n", answer)
     return {'content': answer}
-
-class ChatText(BaseModel):
-    question: str
 
 
 @app.post("/ai/chat-bot")
