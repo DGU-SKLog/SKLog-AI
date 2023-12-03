@@ -67,7 +67,7 @@ answer:
     ]
 
     response = openai.ChatCompletion.create(
-        temperature=0,
+        temperature=0.8,
         model=model,
         messages=messages
     )
@@ -77,6 +77,75 @@ answer:
     print("*answer: \n", answer)
     return {'content': answer}
 
+class cohensionText(BaseModel):
+    content: str
+
+@app.post("/ai/cohesion")
+def cohension(co_text: cohensionText):
+
+    query = f"""
+You should only print the results for the question without plaintext.
+You just have to answer the "query". DO NOT attempt any other interaction.
+Do your best to carry out the command. 
+If the output cannot be generated or is ambiguous, you should just print "해당 작업에 대한 정보가 부족합니다. 더 정확한 데이터를 입력해주세요".
+
+Please edit the provided text for uniformity.
+
+You only need to answer the uniformed text, and if the uniformed text are not provided or does not make sense, print out the reason as an example below.
+Please respond in the same language as the content; if the content is in Korean, respond in Korean, and if it's in English, respond in English.
+{co_text.content}
+"""
+
+    messages = [
+        {"role": "system", "content": "You are a robot that only outputs the results of requests without any interaction with the questioner."},
+        {"role": "user", "content": query}
+    ]
+
+    response = openai.ChatCompletion.create(
+        temperature=0.8,
+        model=model,
+        messages=messages
+    )
+
+    answer = response['choices'][0]['message']['content']
+    print("*query: ", query)
+    print("*answer: \n", answer)
+    return {'content': answer}
+
+class metaText(BaseModel):
+    content: str
+@app.post("/ai/metadata")
+def cohension(me_text: metaText):
+
+    query = f"""
+You should only print the results for the question without plaintext.
+You just have to answer the "query". DO NOT attempt any other interaction.
+Do your best to carry out the command. 
+If the output cannot be generated or is ambiguous, you should just print "해당 작업에 대한 정보가 부족합니다. 더 정확한 데이터를 입력해주세요".
+
+Please generate titles and tags based on the following content.
+
+You only need to answer the title and tags form of dictionary, and if the title and tags are not provided or does not make sense, print out the reason as an example below.
+Please respond in the same language as the content; if the content is in Korean, respond in Korean, and if it's in English, respond in English.
+Dictionary form is {title: 'Title that you make', tag: ['tag1', 'tag2', ...]}
+{me_text.content}
+"""
+
+    messages = [
+        {"role": "system", "content": "You are a robot that only outputs the results of requests without any interaction with the questioner."},
+        {"role": "user", "content": query}
+    ]
+
+    response = openai.ChatCompletion.create(
+        temperature=0.8,
+        model=model,
+        messages=messages
+    )
+
+    answer = response['choices'][0]['message']['content']
+    print("*query: ", query)
+    print("*answer: \n", answer)
+    return {'content': answer}
 
 class ChatText(BaseModel):
     question: str
