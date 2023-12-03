@@ -7,6 +7,8 @@ app = FastAPI()
 from pathlib import Path
 import environ
 import os
+import json
+
 
 #실행방법 uvicorn main:app --reload
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -125,7 +127,7 @@ provided content is = {co_text.content}
 
 
 @app.post("/ai/metadata")
-def cohension(me_text: MetaText):
+def metaData(me_text: MetaText):
 
     query = f"""
 You should only print the results for the question without plaintext.
@@ -137,7 +139,10 @@ question is = Please generate one title and some tags that form of dictionary ba
 
 You only need to answer the title and tags form of dictionary, and if the title and tags are not provided or does not make sense, print out the reason as an example below.
 Please respond in the same language as the content; if the content is in Korean, respond in Korean, and if it's in English, respond in English.
-Dictionary form is {{title: 'Title that you make', tag: ['tag1', 'tag2', ...]}}
+Dictionary form should be {{
+    title: 'Title that you make', 
+tags: ['tag1', 'tag2', ...]
+}}
 
 following content is = {me_text.content}
 """
@@ -154,9 +159,13 @@ following content is = {me_text.content}
     )
 
     answer = response['choices'][0]['message']['content']
+    answer_dict = json.loads(answer) ##answer가 string으로 되어있으므로 json형식으로 변환
+    title = answer_dict.get('title', None) ##dictionary로 변환
+    tags = answer_dict.get('tags', None) ##dictionary로 변환
+
     print("*query: ", query)
     print("*answer: \n", answer)
-    return {'content': answer}
+    return {'title': title, 'tags': tags}
 
 
 @app.post("/ai/chat-bot")
