@@ -98,11 +98,11 @@ You just have to answer the "query". DO NOT attempt any other interaction.
 Do your best to carry out the command. 
 If the output cannot be generated or is ambiguous, you should just print "해당 작업에 대한 정보가 부족합니다. 더 정확한 데이터를 입력해주세요".
 
-Please edit the provided text for uniformity.
+question is = Please edit the provided content for uniformity.
 
 You only need to answer the uniformed text, and if the uniformed text are not provided or does not make sense, print out the reason as an example below.
 Please respond in the same language as the content; if the content is in Korean, respond in Korean, and if it's in English, respond in English.
-{co_text.content}
+provided content is = {co_text.content}
 """
 
     messages = [
@@ -111,7 +111,7 @@ Please respond in the same language as the content; if the content is in Korean,
     ]
 
     response = openai.ChatCompletion.create(
-        temperature=0.8,
+        temperature=0,
         model=model,
         messages=messages
     )
@@ -133,12 +133,13 @@ You just have to answer the "query". DO NOT attempt any other interaction.
 Do your best to carry out the command. 
 If the output cannot be generated or is ambiguous, you should just print "해당 작업에 대한 정보가 부족합니다. 더 정확한 데이터를 입력해주세요".
 
-Please generate titles and tags based on the following content.
+question is = Please generate one title and some tags that form of dictionary based on the following content.
 
 You only need to answer the title and tags form of dictionary, and if the title and tags are not provided or does not make sense, print out the reason as an example below.
 Please respond in the same language as the content; if the content is in Korean, respond in Korean, and if it's in English, respond in English.
-Dictionary form is {title: 'Title that you make', tag: ['tag1', 'tag2', ...]}
-{me_text.content}
+Dictionary form is {{title: 'Title that you make', tag: ['tag1', 'tag2', ...]}}
+
+following content is = {me_text.content}
 """
 
     messages = [
@@ -147,7 +148,7 @@ Dictionary form is {title: 'Title that you make', tag: ['tag1', 'tag2', ...]}
     ]
 
     response = openai.ChatCompletion.create(
-        temperature=0.8,
+        temperature=0,
         model=model,
         messages=messages
     )
@@ -170,7 +171,7 @@ def chat_bot(chat_text: ChatText):
     ]
 
     response = openai.ChatCompletion.create(
-        temperature=0.8,
+        temperature=0,
         model=model,
         messages=messages
     )
