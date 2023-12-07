@@ -135,13 +135,13 @@ You just have to answer the "query". DO NOT attempt any other interaction.
 Do your best to carry out the command. 
 If the output cannot be generated or is ambiguous, you should just print "해당 작업에 대한 정보가 부족합니다. 더 정확한 데이터를 입력해주세요".
 
-question is = Please generate one title and some tags that form of dictionary based on the following content.
+question is = Please generate one title and three tags that form of dictionary based on the following content.
 
 You only need to answer the title and tags form of dictionary, and if the title and tags are not provided or does not make sense, print out the reason as an example below.
 Please respond in the same language as the content; if the content is in Korean, respond in Korean, and if it's in English, respond in English.
 Dictionary form should be {{
     title: 'Title that you make', 
-tags: ['tag1', 'tag2', ...]
+tags: ['tag1', 'tag2', 'tag3']
 }}
 
 following content is = {me_text.content}
